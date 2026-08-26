@@ -1,0 +1,66 @@
+{
+  "name": "@khiemtq/i18n",
+  "version": "2.0.0",
+  "description": "A small, typed i18n toolkit for React clients and JavaScript servers.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js",
+      "require": "./dist/client.cjs"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js",
+      "require": "./dist/server.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "localization",
+    "react",
+    "typescript"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && vite build && npm run build:types",
+    "build:types": "tsc -p tsconfig.build.json",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "pack:dry-run": "npm pack --dry-run",
+    "prepack": "npm test"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "react": "^18.3.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "author": ""
+}
