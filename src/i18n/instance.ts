@@ -94,16 +94,14 @@ export class I18nInstance<
             usedKey = key.slice(separatorIndex + 1);
         }
 
-        const namespacesToTry = [
-            ...new Set([...usedNamespaces, this.config.defaultNamespace]),
-        ];
+        const namespacesToTry = [...new Set([...usedNamespaces, this.config.defaultNamespace])];
         let result: TranslationValue | undefined;
         for (const namespace of namespacesToTry) {
             result = this.lookup(locale, namespace, usedKey);
             if (typeof result !== 'undefined') break;
         }
 
-        const { t: format, s: strict, c: count, ...variables } = options ?? {};
+        const { t: format, s: strict, c: count, index, ...variables } = options ?? {};
         const interpolationVariables: Record<string, unknown> = { ...variables };
 
         if (typeof count === 'number') {
@@ -114,6 +112,12 @@ export class I18nInstance<
                 result = result[pluralCategory === 'one' ? 0 : 1];
             } else if (isRecord(result)) {
                 result = (result[pluralCategory] ?? result.other) as TranslationValue | undefined;
+            }
+        } else if (typeof index === 'number') {
+            if (isArray(result) && index >= 0 && index < result.length) {
+                result = result[index];
+            } else {
+                return (strict ? '' : key) as unknown as TranslateReturnType<Ns, Resource, Input>;
             }
         }
 
@@ -140,8 +144,15 @@ export class I18nInstance<
         let result: TranslationValue | undefined = this.resources.get(locale)?.get(namespace);
 
         for (const part of key.split('.')) {
-            if (!isRecord(result) || !(part in result)) return undefined;
-            result = (result as Record<string, unknown>)[part] as TranslationValue | undefined;
+            if (Array.isArray(result)) {
+                const index = Number(part);
+                if (!Number.isInteger(index) || index < 0 || index >= result.length) return undefined;
+                result = result[index];
+            } else if (isRecord(result) && part in result) {
+                result = (result as Record<string, TranslationValue | undefined>)[part];
+            } else {
+                return undefined;
+            }
         }
 
         return result;

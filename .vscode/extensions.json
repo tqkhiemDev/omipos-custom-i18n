@@ -1,0 +1,29 @@
+{
+    "recommendations": [
+        "aaron-bond.better-comments",
+        "anthropic.claude-code",
+        "bradlc.vscode-tailwindcss",
+        "chakrounanas.turbo-console-log",
+        "christian-kohler.npm-intellisense",
+        "christian-kohler.path-intellisense",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "formulahendry.auto-close-tag",
+        "jock.svg",
+        "kisstkondoros.vscode-gutter-preview",
+        "mikestead.dotenv",
+        "mkxml.vscode-filesize",
+        "MohammadBaqer.better-folding",
+        "naumovs.color-highlight",
+        "pflannery.vscode-versionlens",
+        "quicktype.quicktype",
+        "steoates.autoimport",
+        "thinker.sort-json",
+        "tyriar.sort-lines",
+        "usernamehw.errorlens",
+        "wix.vscode-import-cost",
+        "yoavbls.pretty-ts-errors",
+        "yzhang.markdown-all-in-one"
+    ]
+}

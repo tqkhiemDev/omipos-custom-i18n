@@ -1,0 +1,4 @@
+# src/lib/*
+.claude
+.heroui-docs
+CLAUDE.md

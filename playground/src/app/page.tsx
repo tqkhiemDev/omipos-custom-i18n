@@ -1,12 +1,12 @@
-import { Playground } from "../Playground";
-import { getTranslation } from "../i18n-server";
-import { getServerLocale } from "../server-locale";
+import { Playground } from '../Playground';
+import { getTranslation } from '../i18n-server';
+import { getServerLocale } from '../server-locale';
 
 export default async function HomePage() {
-  const locale = await getServerLocale();
-  const { t } = await getTranslation(locale);
+    const locale = await getServerLocale();
+    const { t } = await getTranslation(locale);
 
-  const abcxyz = t("items.one");
+    const abcxyz = t('weekdays.0');
 
-  return <Playground serverMessage={t("items.other")} />;
+    return <Playground serverMessage={t('items.other')} />;
 }

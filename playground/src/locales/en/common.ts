@@ -1,12 +1,12 @@
-import { TranslationResource } from "@khiemtq/i18n";
+import { TranslationResource } from '@khiemtq/i18n';
 
 export default {
-  badge: "Live huhushfgdsg",
-
-  title: "Develop translations in real time",
-  greeting: "Hello, {{name}}!",
-  items: {
-    one: "{{count}} item",
-    other: "{{count}} items",
-  },
+    badge: 'Live huhushfgdsg',
+    greeting: 'Hello, {{name}}!',
+    items: {
+        one: '{{count}} item',
+        other: '{{count}} items',
+    },
+    title: 'Develop translations in real time',
+    weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 } as const satisfies TranslationResource;

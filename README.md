@@ -13,6 +13,7 @@ A small, typed i18n toolkit for React clients and JavaScript servers. It lazy-lo
 - React 18 and 19 provider/hook API
 - Framework-neutral and server APIs
 - Interpolation, locale-aware plural rules, text formatting, namespace fallback, and strict missing-key handling
+- **Array translation values with index access** (`t("weekdays.0")` or `{ index: 0 }`)
 
 ## Installation
 
@@ -47,6 +48,7 @@ export default {
     one: "{{count}} item",
     other: "{{count}} items",
   },
+  weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 } as const satisfies TranslationResource;
 ```
 
@@ -62,6 +64,7 @@ export default {
   items: {
     other: "{{count}} mục",
   },
+  weekdays: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
 } as const satisfies TranslationResource;
 ```
 
@@ -259,6 +262,19 @@ t("items", { c: 3 }); // "3 items"
 
 Plural objects fall back to their `other` value when the selected category is absent. A two-item array is also supported: index `0` is used for `one`, and index `1` for every other category.
 
+### Array values
+
+Translation values may be arrays. Access an element by appending a numeric index to the dot-notation key, or by passing the `index` option:
+
+```ts
+// Resource:
+// weekdays: ["Sunday", "Monday", "Tuesday", ...]
+t("weekdays.0"); // "Sunday"
+t("weekdays", { index: 2 }); // "Tuesday"
+```
+
+An out-of-range index or a non-array value is treated as a missing key (returns the key, or `""` with `s: true`). When both `c` and `index` are passed, `c` takes precedence and the array is handled as a plural form.
+
 ### Formatting and missing keys
 
 Translation options reserve these short properties:
@@ -266,6 +282,7 @@ Translation options reserve these short properties:
 | Option | Meaning |
 | --- | --- |
 | `c: number` | Select a plural form and expose `count`/`c` for interpolation |
+| `index: number` | When the resolved value is an array, return the item at this index |
 | `s: true` | Strict mode: return `""` instead of the missing key |
 | `t: "lf"` | Lowercase the first character |
 | `t: "l"` | Lowercase the complete result |

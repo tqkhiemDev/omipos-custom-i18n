@@ -1,0 +1,31 @@
+{
+    "[svg]": {
+        "editor.defaultFormatter": "jock.svg"
+    },
+    "[xml]": {
+        "editor.defaultFormatter": "jock.svg"
+    },
+    "[typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+
+    "[javascript]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.rulers": [
+        120
+    ],
+    "editor.tabSize": 4,
+    "files.insertFinalNewline": true,
+    "sort-json.settings.objectSortType": "Key",
+    "sort-json.settings.sortMode": "Objects Only",
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "tailwindCSS.classFunctions": ["tv"]
+}
