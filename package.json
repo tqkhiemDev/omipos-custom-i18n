@@ -1,6 +1,6 @@
 {
     "name": "@omipos/i18n",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "A small, typed i18n toolkit for React clients and JavaScript servers.",
     "type": "module",
     "main": "./dist/index.cjs",
