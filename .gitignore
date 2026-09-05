@@ -1,6 +1,5 @@
 node_modules/
 dist/
-tests/
 playground/.next/
 playground/out/
 .npm-cache/

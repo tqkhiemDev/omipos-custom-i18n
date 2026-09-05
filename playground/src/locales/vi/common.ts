@@ -1,4 +1,4 @@
-import { TranslationResource } from '@khiemtq/i18n';
+import { TranslationResource } from '@omipos/i18n';
 
 export default {
     greeting: 'Xin chào, {{name}}!',

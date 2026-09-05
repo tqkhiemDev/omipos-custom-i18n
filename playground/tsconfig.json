@@ -1,24 +1,18 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "incremental": true,
-    "jsx": "preserve",
-    "plugins": [{ "name": "next" }],
-    "resolveJsonModule": true,
-    "paths": {
-      "@khiemtq/i18n": ["../src/i18n/index.ts"],
-      "@khiemtq/i18n/client": ["../src/i18n/client.ts"],
-      "@khiemtq/i18n/server": ["../src/i18n/server.ts"]
-    }
-  },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "exclude": ["node_modules"]
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "esModuleInterop": true,
+        "incremental": true,
+        "jsx": "preserve",
+        "plugins": [{ "name": "next" }],
+        "resolveJsonModule": true,
+        "paths": {
+            "@omipos/i18n": ["../src/i18n/index.ts"],
+            "@omipos/i18n/client": ["../src/i18n/client.ts"],
+            "@omipos/i18n/server": ["../src/i18n/server.ts"]
+        }
+    },
+    "include": ["next-env.d.ts", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "src/**/*.ts", "src/**/*.tsx"],
+    "exclude": ["node_modules"]
 }

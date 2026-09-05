@@ -104,20 +104,27 @@ export class I18nInstance<
         const { t: format, s: strict, c: count, index, ...variables } = options ?? {};
         const interpolationVariables: Record<string, unknown> = { ...variables };
 
-        if (typeof count === 'number') {
-            interpolationVariables.count ??= count;
-            interpolationVariables.c ??= count;
-            const pluralCategory = getPluralCategory(locale, count);
-            if (isArray(result)) {
-                result = result[pluralCategory === 'one' ? 0 : 1];
-            } else if (isRecord(result)) {
-                result = (result[pluralCategory] ?? result.other) as TranslationValue | undefined;
+        switch (true) {
+            case typeof count === 'number': {
+                interpolationVariables.count ??= count;
+                interpolationVariables.c ??= count;
+                const pluralCategory = getPluralCategory(locale, count);
+
+                switch (true) {
+                    case isArray(result):
+                        result = result[pluralCategory === 'one' ? 0 : 1];
+                        break;
+                    case isRecord(result):
+                        result = (result[pluralCategory] ?? result.other) as TranslationValue | undefined;
+                        break;
+                }
+                break;
             }
-        } else if (typeof index === 'number') {
-            if (isArray(result) && index >= 0 && index < result.length) {
-                result = result[index];
-            } else {
-                return (strict ? '' : key) as unknown as TranslateReturnType<Ns, Resource, Input>;
+            case typeof index === 'number': {
+                if (isArray(result) && index >= 0 && index < result.length) {
+                    result = result[index];
+                }
+                break;
             }
         }
 

@@ -1,4 +1,4 @@
-# @khiemtq/i18n
+# @omipos/i18n
 
 A small, typed i18n toolkit for React clients and JavaScript servers. It lazy-loads translations by locale and namespace, provides key autocomplete from TypeScript resources, and ships ESM, CommonJS, and TypeScript declarations.
 
@@ -18,16 +18,16 @@ A small, typed i18n toolkit for React clients and JavaScript servers. It lazy-lo
 ## Installation
 
 ```sh
-npm install @khiemtq/i18n react
+npm install @omipos/i18n react
 ```
 
 The package exposes three entry points:
 
-| Import | Purpose |
-| --- | --- |
-| `@khiemtq/i18n` | Configuration, utilities, types, and the framework-neutral `I18nInstance` |
-| `@khiemtq/i18n/client` | React client, provider, and hook |
-| `@khiemtq/i18n/server` | Async server translator |
+| Import                | Purpose                                                                   |
+| --------------------- | ------------------------------------------------------------------------- |
+| `@omipos/i18n`        | Configuration, utilities, types, and the framework-neutral `I18nInstance` |
+| `@omipos/i18n/client` | React client, provider, and hook                                          |
+| `@omipos/i18n/server` | Async server translator                                                   |
 
 ## Quick start
 
@@ -37,34 +37,34 @@ Keep resources as `const` objects to get autocomplete for their keys.
 
 ```ts
 // locales/en/common.ts
-import type { TranslationResource } from "@khiemtq/i18n";
+import type { TranslationResource } from '@omipos/i18n';
 
 export default {
-  greeting: "Hello, {{name}}!",
-  navigation: {
-    settings: "Settings",
-  },
-  items: {
-    one: "{{count}} item",
-    other: "{{count}} items",
-  },
-  weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    greeting: 'Hello, {{name}}!',
+    navigation: {
+        settings: 'Settings',
+    },
+    items: {
+        one: '{{count}} item',
+        other: '{{count}} items',
+    },
+    weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 } as const satisfies TranslationResource;
 ```
 
 ```ts
 // locales/vi/common.ts
-import type { TranslationResource } from "@khiemtq/i18n";
+import type { TranslationResource } from '@omipos/i18n';
 
 export default {
-  greeting: "Xin chào, {{name}}!",
-  navigation: {
-    settings: "Cài đặt",
-  },
-  items: {
-    other: "{{count}} mục",
-  },
-  weekdays: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+    greeting: 'Xin chào, {{name}}!',
+    navigation: {
+        settings: 'Cài đặt',
+    },
+    items: {
+        other: '{{count}} mục',
+    },
+    weekdays: ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'],
 } as const satisfies TranslationResource;
 ```
 
@@ -74,33 +74,30 @@ Add another file for each namespace, for example `locales/en/dashboard.ts` and `
 
 ```ts
 // i18n-config.ts
-import {
-  defineI18nConfig,
-  type ResourceLoaders,
-} from "@khiemtq/i18n";
+import { defineI18nConfig, type ResourceLoaders } from '@omipos/i18n';
 
-export const locales = ["en", "vi"] as const;
-export const namespaces = ["common", "dashboard"] as const;
+export const locales = ['en', 'vi'] as const;
+export const namespaces = ['common', 'dashboard'] as const;
 
 export type Locale = (typeof locales)[number];
 export type Namespace = (typeof namespaces)[number];
 
 export const i18nConfig = defineI18nConfig({
-  locales,
-  namespaces,
-  defaultLocale: "en",
-  defaultNamespace: "common",
-  initialNamespaces: ["dashboard"],
-  resources: {
-    en: {
-      common: async () => (await import("./locales/en/common")).default,
-      dashboard: async () => (await import("./locales/en/dashboard")).default,
-    },
-    vi: {
-      common: async () => (await import("./locales/vi/common")).default,
-      dashboard: async () => (await import("./locales/vi/dashboard")).default,
-    },
-  } satisfies ResourceLoaders<Locale, Namespace>,
+    locales,
+    namespaces,
+    defaultLocale: 'en',
+    defaultNamespace: 'common',
+    initialNamespaces: ['dashboard'],
+    resources: {
+        en: {
+            common: async () => (await import('./locales/en/common')).default,
+            dashboard: async () => (await import('./locales/en/dashboard')).default,
+        },
+        vi: {
+            common: async () => (await import('./locales/vi/common')).default,
+            dashboard: async () => (await import('./locales/vi/dashboard')).default,
+        },
+    } satisfies ResourceLoaders<Locale, Namespace>,
 });
 ```
 
@@ -116,64 +113,60 @@ Listing a namespace does not load it eagerly. The client and server helpers load
 
 ```ts
 // i18n-client.ts
-"use client"; // Required by frameworks such as Next.js App Router.
+'use client'; // Required by frameworks such as Next.js App Router.
 
-import { createI18nClient } from "@khiemtq/i18n/client";
-import { i18nConfig } from "./i18n-config";
+import { createI18nClient } from '@omipos/i18n/client';
+import { i18nConfig } from './i18n-config';
 
-export const { I18nProvider, i18n, useTranslation } =
-  createI18nClient(i18nConfig);
+export const { I18nProvider, i18n, useTranslation } = createI18nClient(i18nConfig);
 ```
 
 Wrap the client part of the app with the generated provider. The optional `locale` prop is useful when a framework resolves the locale on the server.
 
 ```tsx
-<I18nProvider locale="vi">{children}</I18nProvider>
+<I18nProvider locale='vi'>{children}</I18nProvider>
 ```
 
 Call `useTranslation` with one namespace or a readonly namespace array:
 
 ```tsx
-"use client";
+'use client';
 
-import { useTranslation } from "./i18n-client";
+import { useTranslation } from './i18n-client';
 
 export function Welcome() {
-  const { i18n, j, langue, ready, t } = useTranslation(
-    ["common", "dashboard"] as const,
-  );
+    const { i18n, j, langue, ready, t } = useTranslation(['common', 'dashboard'] as const);
 
-  if (!ready) return null;
+    if (!ready) return null;
 
-  return (
-    <section>
-      <p>{t("greeting", { name: "Khiem" })}</p>
-      <p>{t("navigation.settings")}</p>
-      <p>{t("dashboard:title")}</p>
-      <p>{j(["greeting", { name: "Khiem" }], "dashboard:ready")}</p>
+    return (
+        <section>
+            <p>{t('greeting', { name: 'Khiem' })}</p>
+            <p>{t('navigation.settings')}</p>
+            <p>{t('dashboard:title')}</p>
+            <p>{j(['greeting', { name: 'Khiem' }], 'dashboard:ready')}</p>
 
-      <button onClick={() => void i18n.changeLanguage("vi")}>
-        Current locale: {langue}
-      </button>
-    </section>
-  );
+            <button onClick={() => void i18n.changeLanguage('vi')}>Current locale: {langue}</button>
+        </section>
+    );
 }
 ```
 
 **Note:** When you pass multiple namespaces (e.g., `["common", "dashboard"]`), TypeScript will automatically infer the correct return type for translation keys:
+
 - Keys without prefix (e.g., `t("greeting")`) will be typed from all provided namespaces
 - Keys with namespace prefix (e.g., `t("dashboard:title")`) will be typed specifically from that namespace
 - If a key exists in only one namespace, the return type will be properly inferred from that namespace's resource
 
 The hook returns:
 
-| Value | Description |
-| --- | --- |
-| `t(key, options?)` | Translator fixed to the requested namespace or namespaces |
-| `j(...entries)` | Translates entries and joins them with a single space; returns `""` until the namespaces are ready |
-| `ready` | `true` when every requested namespace is loaded for the active locale |
-| `langue` | The active locale |
-| `i18n` | The underlying `I18nClient` instance |
+| Value              | Description                                                                                        |
+| ------------------ | -------------------------------------------------------------------------------------------------- |
+| `t(key, options?)` | Translator fixed to the requested namespace or namespaces                                          |
+| `j(...entries)`    | Translates entries and joins them with a single space; returns `""` until the namespaces are ready |
+| `ready`            | `true` when every requested namespace is loaded for the active locale                              |
+| `langue`           | The active locale                                                                                  |
+| `i18n`             | The underlying `I18nClient` instance                                                               |
 
 `I18nProvider` loads the default and initial namespaces. Each hook lazily loads its requested namespaces on mount, so treat the namespace argument as stable for that component instance. `changeLanguage` loads the active namespaces before publishing the new locale to subscribers.
 
@@ -181,8 +174,8 @@ The hook returns:
 
 ```ts
 // i18n-server.ts
-import { createI18nServer } from "@khiemtq/i18n/server";
-import { i18nConfig } from "./i18n-config";
+import { createI18nServer } from '@omipos/i18n/server';
+import { i18nConfig } from './i18n-config';
 
 export const { getTranslation, i18n } = createI18nServer(i18nConfig);
 ```
@@ -190,21 +183,18 @@ export const { getTranslation, i18n } = createI18nServer(i18nConfig);
 `getTranslation` loads the default namespace, every initial namespace, and every namespace requested by the call before returning.
 
 ```ts
-const { j, locale, t } = await getTranslation(
-  "vi",
-  ["common", "dashboard"] as const,
-);
+const { j, locale, t } = await getTranslation('vi', ['common', 'dashboard'] as const);
 
-t("greeting", { name: "Khiem" });
-t("dashboard:title");
-j(["greeting", { name: "Khiem" }], "dashboard:ready");
+t('greeting', { name: 'Khiem' });
+t('dashboard:title');
+j(['greeting', { name: 'Khiem' }], 'dashboard:ready');
 ```
 
 Both arguments are optional. When `namespaces` is omitted, it automatically defaults to `[defaultNamespace, ...initialNamespaces]` from your config:
 
 ```ts
 // If config has defaultNamespace: "common" and initialNamespaces: ["dashboard"]
-const { t } = await getTranslation("vi");
+const { t } = await getTranslation('vi');
 // t is typed with ["common", "dashboard"]
 // t("greeting") works and is typed from common.greeting
 // t("dashboard:title") works and is typed from dashboard.title
@@ -224,14 +214,14 @@ const { t } = await getTranslation();
 Use dot notation for nested values:
 
 ```ts
-t("navigation.settings");
+t('navigation.settings');
 ```
 
 A fixed translator searches its requested namespaces in order, then falls back to `defaultNamespace`. Prefix a key with `namespace:` to select a namespace explicitly:
 
 ```ts
-t("dashboard:title");
-t("common:greeting", { name: "Khiem" });
+t('dashboard:title');
+t('common:greeting', { name: 'Khiem' });
 ```
 
 Make sure the selected namespace has been requested by `useTranslation`, `getTranslation`, or `loadNamespaces` before translating from it.
@@ -244,7 +234,7 @@ Pass values for `{{variable}}` placeholders through the options object:
 
 ```ts
 // Resource: "Hello, {{name}}!"
-t("greeting", { name: "Khiem" }); // "Hello, Khiem!"
+t('greeting', { name: 'Khiem' }); // "Hello, Khiem!"
 ```
 
 All occurrences of a supplied placeholder are replaced. `null` and `undefined` values become an empty string; placeholders without a matching option remain unchanged.
@@ -256,8 +246,8 @@ Pass the numeric count as `c`. The plural category is selected with `Intl.Plural
 ```ts
 // Resource:
 // items: { one: "{{count}} item", other: "{{count}} items" }
-t("items", { c: 1 }); // "1 item"
-t("items", { c: 3 }); // "3 items"
+t('items', { c: 1 }); // "1 item"
+t('items', { c: 3 }); // "3 items"
 ```
 
 Plural objects fall back to their `other` value when the selected category is absent. A two-item array is also supported: index `0` is used for `one`, and index `1` for every other category.
@@ -269,8 +259,8 @@ Translation values may be arrays. Access an element by appending a numeric index
 ```ts
 // Resource:
 // weekdays: ["Sunday", "Monday", "Tuesday", ...]
-t("weekdays.0"); // "Sunday"
-t("weekdays", { index: 2 }); // "Tuesday"
+t('weekdays.0'); // "Sunday"
+t('weekdays', { index: 2 }); // "Tuesday"
 ```
 
 An out-of-range index or a non-array value is treated as a missing key (returns the key, or `""` with `s: true`). When both `c` and `index` are passed, `c` takes precedence and the array is handled as a plural form.
@@ -279,21 +269,21 @@ An out-of-range index or a non-array value is treated as a missing key (returns 
 
 Translation options reserve these short properties:
 
-| Option | Meaning |
-| --- | --- |
-| `c: number` | Select a plural form and expose `count`/`c` for interpolation |
+| Option          | Meaning                                                            |
+| --------------- | ------------------------------------------------------------------ |
+| `c: number`     | Select a plural form and expose `count`/`c` for interpolation      |
 | `index: number` | When the resolved value is an array, return the item at this index |
-| `s: true` | Strict mode: return `""` instead of the missing key |
-| `t: "lf"` | Lowercase the first character |
-| `t: "l"` | Lowercase the complete result |
-| `t: "u"` | Uppercase the complete result |
-| `t: "c"` | Capitalize the first character |
-| `t: "ca"` | Capitalize every space-separated word |
+| `s: true`       | Strict mode: return `""` instead of the missing key                |
+| `t: "lf"`       | Lowercase the first character                                      |
+| `t: "l"`        | Lowercase the complete result                                      |
+| `t: "u"`        | Uppercase the complete result                                      |
+| `t: "c"`        | Capitalize the first character                                     |
+| `t: "ca"`       | Capitalize every space-separated word                              |
 
 ```ts
-t("status", { t: "u" });
-t("unknown.key"); // "unknown.key"
-t("unknown.key", { s: true }); // ""
+t('status', { t: 'u' });
+t('unknown.key'); // "unknown.key"
+t('unknown.key', { s: true }); // ""
 ```
 
 Inputs containing whitespace or `@` are treated as literal text and returned unchanged.
@@ -303,45 +293,40 @@ Inputs containing whitespace or `@` are treated as literal text and returned unc
 The `j` helper returned by the React hook and server translator accepts keys or `[key, options]` tuples:
 
 ```ts
-j(["greeting", { name: "Khiem" }], "dashboard:ready");
+j(['greeting', { name: 'Khiem' }], 'dashboard:ready');
 ```
 
 For a standalone translator, use the framework-neutral helper. Its entries are passed as an array:
 
 ```ts
-import { joinTranslations } from "@khiemtq/i18n";
+import { joinTranslations } from '@omipos/i18n';
 
-const message = joinTranslations(t, [
-  ["greeting", { name: "Khiem" }],
-  "dashboard:ready",
-]);
+const message = joinTranslations(t, [['greeting', { name: 'Khiem' }], 'dashboard:ready']);
 ```
 
 ## Configuration reference
 
-| Property | Required | Description |
-| --- | --- | --- |
-| `locales` | Yes | Readonly array of supported locale codes |
-| `namespaces` | Yes | Readonly array of supported namespace names and the source of the namespace union |
-| `defaultLocale` | Yes | Initial locale and the default when a locale argument is omitted; must be included in `locales` |
-| `defaultNamespace` | Yes | Namespace used when none is supplied and as the namespace fallback; must be included in `namespaces` |
-| `initialNamespaces` | No | Supported namespaces loaded alongside the default namespace |
-| `resources` | Yes | Loader matrix for every locale and namespace |
+| Property            | Required | Description                                                                                          |
+| ------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `locales`           | Yes      | Readonly array of supported locale codes                                                             |
+| `namespaces`        | Yes      | Readonly array of supported namespace names and the source of the namespace union                    |
+| `defaultLocale`     | Yes      | Initial locale and the default when a locale argument is omitted; must be included in `locales`      |
+| `defaultNamespace`  | Yes      | Namespace used when none is supplied and as the namespace fallback; must be included in `namespaces` |
+| `initialNamespaces` | No       | Supported namespaces loaded alongside the default namespace                                          |
+| `resources`         | Yes      | Loader matrix for every locale and namespace                                                         |
 
 Use `isSupportedLocale` to validate an unknown value while preserving the locale union:
 
 ```ts
-import { isSupportedLocale } from "@khiemtq/i18n";
-import { i18nConfig, locales } from "./i18n-config";
+import { isSupportedLocale } from '@omipos/i18n';
+import { i18nConfig, locales } from './i18n-config';
 
-const locale = isSupportedLocale(locales, value)
-  ? value
-  : i18nConfig.defaultLocale;
+const locale = isSupportedLocale(locales, value) ? value : i18nConfig.defaultLocale;
 ```
 
 ## API reference
 
-### `@khiemtq/i18n`
+### `@omipos/i18n`
 
 - `defineI18nConfig(config)` returns the typed shared configuration and validates its default locale and namespace.
 - `isSupportedLocale(locales, value)` is a runtime check and TypeScript type guard.
@@ -351,14 +336,14 @@ const locale = isSupportedLocale(locales, value)
 
 Important `I18nInstance` methods are `loadNamespaces(locale, namespaces)`, `hasReady(locale, namespaces)`, `translate(key, locale, options?, namespaces?)`, and `getFixedT(locale, namespaces)`.
 
-### `@khiemtq/i18n/client`
+### `@omipos/i18n/client`
 
 - `createI18nClient(config)` returns `I18nProvider`, `useTranslation`, and a shared `i18n` instance.
 - `I18nClient` exposes `getLocale`, `hasReady`, `getFixedT`, `t`, `loadNamespaces`, `changeLanguage`, and `subscribe`.
 
 Unsupported locales passed to `changeLanguage` are ignored. Validate external values with `isSupportedLocale` when an invalid locale should be handled explicitly.
 
-### `@khiemtq/i18n/server`
+### `@omipos/i18n/server`
 
 - `createI18nServer(config)` returns `getTranslation` and the underlying `I18nInstance`.
 - `getTranslation(locale?, namespaces?)` resolves to `{ locale, t, j }` after all required resources are ready.
