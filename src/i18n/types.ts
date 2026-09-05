@@ -119,6 +119,7 @@ type GetNamespaceResource<Namespace extends string, Resource extends ResourceLoa
 >;
 
 type LiteralUnion<T extends string> = T | (string & {});
+type OnlyStringKeys<T> = T extends string ? T : string;
 
 type AllNamespaceKeys<Namespaces extends NamespaceInput<string>, Resource extends ResourceLoaders<string, string>> = {
     [Namespace in ToNSArr<Namespaces>[number]]: `${Namespace & string}:${TranslationKeys<
@@ -137,20 +138,22 @@ export type TranslateReturnType<
     Namespaces extends NamespaceInput<string>,
     Resource extends ResourceLoaders<string, string>,
     Input extends TranslateKeyWithNamespace<Namespaces, Resource>,
-> = Input extends `${infer NS}:${infer Key}`
-    ? NS extends ToNSArr<Namespaces>[number]
-        ? TranslationValueByKey<Prettify<GetNamespaceResource<NS, Resource>>, Key>
-        : string
-    : ToNSArr<Namespaces> extends readonly [infer SingleNS extends string]
-      ? TranslationValueByKey<Prettify<GetNamespaceResource<SingleNS, Resource>>, Input>
-      : TranslationValueByKey<
-            Prettify<
-                {
-                    [NS in ToNSArr<Namespaces>[number]]: GetNamespaceResource<NS, Resource>;
-                }[ToNSArr<Namespaces>[number]]
-            >,
-            Input
-        >;
+> = OnlyStringKeys<
+    Input extends `${infer NS}:${infer Key}`
+        ? NS extends ToNSArr<Namespaces>[number]
+            ? TranslationValueByKey<Prettify<GetNamespaceResource<NS, Resource>>, Key>
+            : string
+        : ToNSArr<Namespaces> extends readonly [infer SingleNS extends string]
+          ? TranslationValueByKey<Prettify<GetNamespaceResource<SingleNS, Resource>>, Input>
+          : TranslationValueByKey<
+                Prettify<
+                    {
+                        [NS in ToNSArr<Namespaces>[number]]: GetNamespaceResource<NS, Resource>;
+                    }[ToNSArr<Namespaces>[number]]
+                >,
+                Input
+            >
+>;
 
 export type InternalFixedT<Ns extends NamespaceInput<string>, Resource extends ResourceLoaders<string, string>> = <
     K extends TranslateKeyWithNamespace<Ns, Resource>,

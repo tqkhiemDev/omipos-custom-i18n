@@ -6,7 +6,7 @@ export default async function HomePage() {
     const locale = await getServerLocale();
     const { t } = await getTranslation(locale);
 
-    const abcxyz = t('weekdays.0');
+    const abcxyz = t('weekdays');
 
     return <Playground serverMessage={t('items.other')} />;
 }
