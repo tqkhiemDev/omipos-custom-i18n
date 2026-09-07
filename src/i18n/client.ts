@@ -57,8 +57,8 @@ export class I18nClient<
     }
 
     getFixedT<Ns extends NamespaceInput<Namespace>>(namespaces: Ns) {
-        const fixedT: InternalFixedT<Ns, Resource> = (key, opts) => {
-            return this.instance.translate(key, this.locale, opts, namespaces);
+        const fixedT: InternalFixedT<Ns, Resource, DefaultNS, InitialNS> = (key, opts) => {
+            return this.instance.translate(key, this.locale, opts, namespaces) as any;
         };
 
         return fixedT;

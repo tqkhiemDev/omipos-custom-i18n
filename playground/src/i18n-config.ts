@@ -18,7 +18,7 @@ export const i18nConfig = defineI18nConfig({
     namespaces,
     defaultLocale: 'vi',
     defaultNamespace: 'common',
-    initialNamespaces: ['common', 'playground'],
+    initialNamespaces: ['common'],
     resources: {
         en: {
             common: async () => (await import('./locales/en/common')).default,

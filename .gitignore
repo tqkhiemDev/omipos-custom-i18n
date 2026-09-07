@@ -6,3 +6,4 @@ playground/out/
 *.tgz
 *.log
 .DS_Store
+*.tsbuildinfo

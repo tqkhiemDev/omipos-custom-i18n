@@ -1,11 +1,11 @@
 import type {
-  I18nConfig,
-  InternalFixedT,
-  JoinTranslatorArg,
-  NamespaceInput,
-  ResourceLoaders,
-  DefaultNamespaces,
-} from "./types";
+    I18nConfig,
+    InternalFixedT,
+    JoinTranslatorArg,
+    NamespaceInput,
+    ResourceLoaders,
+    DefaultNamespaces,
+} from './types';
 
 import { I18nInstance, isArray, joinTranslations } from "./instance";
 
@@ -27,7 +27,7 @@ export const createI18nServer = <
     namespaces?: Ns,
   ): Promise<{
     locale: Locale;
-    t: InternalFixedT<Ns, Resource>;
+    t: InternalFixedT<Ns, Resource, DefaultNS, InitialNS>;
     j: (...args: JoinTranslatorArg[]) => string;
   }> => {
     const actualNamespaces = (namespaces ??

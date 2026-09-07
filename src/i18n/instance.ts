@@ -55,8 +55,13 @@ const getPluralCategory = (locale: string, count: number) => {
     }
 };
 
-export const joinTranslations = <Ns extends NamespaceInput<string>, Resource extends ResourceLoaders<string, string>>(
-    translator: InternalFixedT<Ns, Resource>,
+export const joinTranslations = <
+    Ns extends NamespaceInput<string>,
+    Resource extends ResourceLoaders<string, string>,
+    DefaultNS extends string = string,
+    InitialNS extends readonly string[] = readonly string[],
+>(
+    translator: InternalFixedT<Ns, Resource, DefaultNS, InitialNS>,
     args: readonly JoinTranslatorArg[],
 ) => args.map((input) => (isArray(input) ? translator(input[0], input[1]) : translator(input as string))).join(' ');
 
@@ -166,8 +171,8 @@ export class I18nInstance<
     }
 
     getFixedT<Ns extends NamespaceInput<Namespace>>(lang: Locale, ns: Ns) {
-        const fixedT: InternalFixedT<Ns, Resource> = (key, opts) => {
-            return this.translate(key, lang, opts, ns);
+        const fixedT: InternalFixedT<Ns, Resource, DefaultNS, InitialNS> = (key, opts) => {
+            return this.translate(key, lang, opts, ns) as any;
         };
 
         return fixedT;

@@ -155,9 +155,16 @@ export type TranslateReturnType<
             >
 >;
 
-export type InternalFixedT<Ns extends NamespaceInput<string>, Resource extends ResourceLoaders<string, string>> = <
-    K extends TranslateKeyWithNamespace<Ns, Resource>,
+export type InternalFixedT<
+    Ns extends NamespaceInput<string>,
+    Resource extends ResourceLoaders<string, string>,
+    DefaultNS extends string = string,
+    InitialNS extends readonly string[] = readonly string[],
+> = <
+    K extends
+        | TranslateKeyWithNamespace<Ns, Resource>
+        | TranslateKeyWithNamespace<readonly [DefaultNS, ...InitialNS], Resource>,
 >(
     key: K,
     opts?: TranslateOptions,
-) => TranslateReturnType<Ns, Resource, K>;
+) => TranslateReturnType<readonly [...ToNSArr<Ns>, DefaultNS, ...InitialNS], Resource, K>;
