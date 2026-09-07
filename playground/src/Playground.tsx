@@ -11,7 +11,7 @@ type PlaygroundProps = {
 };
 
 export function Playground({ serverMessage }: PlaygroundProps) {
-    const { i18n, j, langue, ready, t } = useTranslation('common');
+    const { i18n, j, langue, ready, t } = useTranslation('playground');
     const [name, setName] = useState('Khiem');
     const [count, setCount] = useState(2);
     const [isChangingLocale, startLocaleTransition] = useTransition();
@@ -33,7 +33,7 @@ export function Playground({ serverMessage }: PlaygroundProps) {
                         className='status-dot'
                         aria-hidden='true'
                     />
-                    {t('playground:badge')}
+                    {t('badge')}
                 </div>
 
                 <div className='hero__heading'>

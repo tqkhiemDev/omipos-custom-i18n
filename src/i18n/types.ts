@@ -141,16 +141,14 @@ export type TranslateReturnType<
 > = OnlyStringKeys<
     Input extends `${infer NS}:${infer Key}`
         ? NS extends ToNSArr<Namespaces>[number]
-            ? TranslationValueByKey<Prettify<GetNamespaceResource<NS, Resource>>, Key>
+            ? TranslationValueByKey<GetNamespaceResource<NS, Resource>, Key>
             : string
         : ToNSArr<Namespaces> extends readonly [infer SingleNS extends string]
-          ? TranslationValueByKey<Prettify<GetNamespaceResource<SingleNS, Resource>>, Input>
+          ? TranslationValueByKey<GetNamespaceResource<SingleNS, Resource>, Input>
           : TranslationValueByKey<
-                Prettify<
-                    {
-                        [NS in ToNSArr<Namespaces>[number]]: GetNamespaceResource<NS, Resource>;
-                    }[ToNSArr<Namespaces>[number]]
-                >,
+                {
+                    [NS in ToNSArr<Namespaces>[number]]: GetNamespaceResource<NS, Resource>;
+                }[ToNSArr<Namespaces>[number]],
                 Input
             >
 >;
@@ -160,11 +158,7 @@ export type InternalFixedT<
     Resource extends ResourceLoaders<string, string>,
     DefaultNS extends string = string,
     InitialNS extends readonly string[] = readonly string[],
-> = <
-    K extends
-        | TranslateKeyWithNamespace<Ns, Resource>
-        | TranslateKeyWithNamespace<readonly [DefaultNS, ...InitialNS], Resource>,
->(
+> = <K extends TranslateKeyWithNamespace<readonly [...ToNSArr<Ns>, DefaultNS, ...InitialNS], Resource>>(
     key: K,
     opts?: TranslateOptions,
 ) => TranslateReturnType<readonly [...ToNSArr<Ns>, DefaultNS, ...InitialNS], Resource, K>;

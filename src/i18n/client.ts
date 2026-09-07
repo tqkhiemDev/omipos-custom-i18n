@@ -1,4 +1,5 @@
 import type {
+    DefaultNamespaces,
     I18nConfig,
     InternalFixedT,
     JoinTranslatorArg,
@@ -127,10 +128,7 @@ export const createI18nClient = <
 
         useEffect(() => {
             void i18n
-                .loadNamespaces([
-                    config.defaultNamespace,
-                    ...(config.initialNamespaces ?? []),
-                ])
+                .loadNamespaces([config.defaultNamespace, ...(config.initialNamespaces ?? [])])
                 .catch((error: unknown) => {
                     console.error('Failed to load initial i18n namespaces', error);
                 });
@@ -139,7 +137,9 @@ export const createI18nClient = <
         return createElement(I18nContext.Provider, { value: i18n }, children);
     };
 
-    const useTranslation = <Ns extends NamespaceInput<Namespace>>(namespace?: Ns) => {
+    const useTranslation = <Ns extends NamespaceInput<Namespace> = DefaultNamespaces<typeof config>>(
+        namespace?: Ns,
+    ) => {
         const i18n = useContext(I18nContext);
         if (!i18n) {
             throw new Error('useTranslation must be used within I18nProvider');
@@ -153,9 +153,7 @@ export const createI18nClient = <
         const t = useMemo(
             () => i18n.getFixedT(actualNamespace),
             // eslint-disable-next-line react-hooks/exhaustive-deps
-            [
-                version,
-            ],
+            [version],
         );
 
         useEffect(

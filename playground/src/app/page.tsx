@@ -4,9 +4,9 @@ import { getServerLocale } from '../server-locale';
 
 export default async function HomePage() {
     const locale = await getServerLocale();
-    const { t } = await getTranslation(locale, 'common');
+    const { t } = await getTranslation(locale, ['playground', 'common']);
 
-    const abcxyz = t('playground:badge');
+    const abcxyz = t('pla');
 
     return <Playground serverMessage={t('common:greeting')} />;
 }
