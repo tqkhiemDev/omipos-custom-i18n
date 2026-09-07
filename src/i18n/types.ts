@@ -134,7 +134,7 @@ export type TranslateKeyWithNamespace<
     TranslationKeys<Prettify<LoadedResource<Namespaces, Resource>>> | AllNamespaceKeys<Namespaces, Resource>
 >;
 
-export type TranslateReturnType<
+type _TranslateReturnTypeCompute<
     Namespaces extends NamespaceInput<string>,
     Resource extends ResourceLoaders<string, string>,
     Input extends TranslateKeyWithNamespace<Namespaces, Resource>,
@@ -152,6 +152,12 @@ export type TranslateReturnType<
                 Input
             >
 >;
+
+export type TranslateReturnType<
+    Namespaces extends NamespaceInput<string>,
+    Resource extends ResourceLoaders<string, string>,
+    Input extends TranslateKeyWithNamespace<Namespaces, Resource>,
+> = _TranslateReturnTypeCompute<Namespaces, Resource, Input> extends infer R ? R & {} : never;
 
 export type InternalFixedT<
     Ns extends NamespaceInput<string>,

@@ -11,7 +11,7 @@ type PlaygroundProps = {
 };
 
 export function Playground({ serverMessage }: PlaygroundProps) {
-    const { i18n, j, langue, ready, t } = useTranslation('playground');
+    const { i18n, j, langue, ready, t } = useTranslation();
     const [name, setName] = useState('Khiem');
     const [count, setCount] = useState(2);
     const [isChangingLocale, startLocaleTransition] = useTransition();
