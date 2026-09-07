@@ -4,14 +4,14 @@ import { useState, useTransition } from 'react';
 
 import { setLocaleCookie } from './app/actions';
 import { useTranslation } from './i18n-client';
-import { namespaces, type Locale } from './i18n-config';
+import { type Locale } from './i18n-config';
 
 type PlaygroundProps = {
     serverMessage: string;
 };
 
 export function Playground({ serverMessage }: PlaygroundProps) {
-    const { i18n, j, langue, ready, t } = useTranslation(namespaces);
+    const { i18n, j, langue, ready, t } = useTranslation(['playground', 'common']);
     const [name, setName] = useState('Khiem');
     const [count, setCount] = useState(2);
     const [isChangingLocale, startLocaleTransition] = useTransition();
