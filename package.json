@@ -8,6 +8,16 @@
     "types": "./dist/index.d.ts",
     "license": "MIT",
     "sideEffects": false,
+    "typesVersions": {
+        "*": {
+            "client": [
+                "./dist/client.d.ts"
+            ],
+            "server": [
+                "./dist/server.d.ts"
+            ]
+        }
+    },
     "files": [
         "dist",
         "README.md",
