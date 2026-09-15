@@ -1,11 +1,29 @@
 export type FormatTextType = 'lf' | 'l' | 'u' | 'c' | 'ca';
 
 export type TranslateKey = string; // 'namespace:key' | 'key'
+/**
+ * Options for translation lookup and formatting.
+ *
+ * **All keys except reserved ones** become interpolation variables, replacing `{{key}}` placeholders in translation.
+ *
+ * @example
+ * ```ts
+ * t('greeting', { name: 'Alice' }) // "Hello, {{name}}" → "Hello, Alice"
+ * t('items', { c: 5, count: 5 }) // pluralization + interpolation
+ * t('list', { index: 0 }) // pick first element from array
+ * t('missing', { s: true }) // throw if "missing" not found
+ * t('title', { t: 'u' }) // 'u' = uppercase format
+ * ```
+ */
 export type TranslateOptions = {
+    /** Text formatting function applied to final translated string */
     t?: FormatTextType;
-    s?: boolean; // strict, return empty string if not found
-    c?: number; // count, return plurals version of the text
-    index?: number; // when the resolved value is an array, return the item at this index
+    /** Strict mode; throw if key missing (overrides instance default) */
+    s?: boolean;
+    /** Count for pluralization (passed to `Intl.PluralRules`) */
+    c?: number;
+    /** Index for array-type translations */
+    index?: number;
 } & { [variable: string]: any };
 export type Translator = (key: TranslateKey, opts?: TranslateOptions) => string;
 

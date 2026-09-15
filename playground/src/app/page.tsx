@@ -6,7 +6,7 @@ export default async function HomePage() {
     const locale = await getServerLocale();
     const { t } = await getTranslation(locale, ['playground', 'common']);
 
-    const abcxyz = t('joined');
+    const abcxyz = t('common:greeting');
 
     return <Playground serverMessage={t('common:greeting')} />;
 }
